@@ -102,7 +102,7 @@ def main():
         "color": color
     }
 
-    # Write badge JSON
+    # Write Badge JSON
     dir_path = os.path.join("badges", user, repo, branch)
     os.makedirs(dir_path, exist_ok=True)
     badge_path = os.path.join(dir_path, "pylint-badge.json")
