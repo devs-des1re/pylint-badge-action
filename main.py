@@ -3,22 +3,7 @@ import json
 import os
 import subprocess
 
-def get_files():
-    """Gets Python files in the repository.
-
-    Returns:
-        _type_: Python Files
-    """
-    result = subprocess.run(
-        ["git", "ls-files", "*.py"],
-        stdout=subprocess.PIPE,
-        text=True,
-        check=False
-    )
-
-    return result.stdout.split()
-
-def get_score(files, pylintrc=None):
+def get_score(pylintrc=None):
     """Runs Pyint and returns the score.
 
     Args:
@@ -29,12 +14,11 @@ def get_score(files, pylintrc=None):
     """
 
     # Run PyLint and get the score
-    if not files:
-        return 0.00
-
     command = ["pylint"]
     if pylintrc:
         command.append(f"--rcfile={pylintrc}")
+    
+    command += ["git", "ls-files", "*.py"]
 
     result = subprocess.run(
         command,
@@ -97,8 +81,7 @@ def main():
     bad_score = os.environ.get("BAD_SCORE", "red")
 
     # Run PyLint
-    py_files = get_files()
-    score = get_score(py_files, pylintrc_file)
+    score = get_score(pylintrc_file)
     color = get_color(score, perfect_score, good_score, ok_score, bad_score)
 
     badge_data = {
