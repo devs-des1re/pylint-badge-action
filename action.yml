@@ -78,11 +78,5 @@ runs:
         git add .
         git commit -m "Added PyLint Badge For User"
 
-        git push origin badges --force
-      shell: bash
-
-    # 6. Push Changes To Repo
-    - name: Push Change To Repo
-      run: |
-        git push https://x-access-token:${{ inputs.gh_token }}@github.com/${GITHUB_REPOSITORY}.git
+        git push https://x-access-token:${{ inputs.gh_token }}@github.com/${GITHUB_REPOSITORY}.git badges --force
       shell: bash
