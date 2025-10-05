@@ -32,9 +32,9 @@ def get_score(files, pylintrc=None):
     if not files:
         return 0.00
 
-    command = ["pylint", "."]
+    command = ["pylint"]
     if pylintrc:
-        command += ["--rcfile", pylintrc]
+        command.append(f"--rcfile={pylintrc}")
 
     result = subprocess.run(
         command,
