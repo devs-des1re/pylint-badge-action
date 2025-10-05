@@ -84,3 +84,4 @@ runs:
     - name: Push Change To Repo
       run: |
         git push https://x-access-token:${{ inputs.gh_token }}@github.com/${GITHUB_REPOSITORY}.git
+      shell: bash
