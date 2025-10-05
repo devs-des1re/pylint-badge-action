@@ -1,6 +1,9 @@
 name: "PyLint Dynamic Badge"
 description: "Runs a linting test and creates a badge with the score."
 author: "devs-des1re"
+branding:
+  icon: award
+  color: blue
 
 inputs:
   gh_token:
