@@ -2,6 +2,7 @@
 import json
 import os
 import subprocess
+import re
 
 def get_score(pylintrc=None):
     """Runs Pyint and returns the score.
@@ -44,13 +45,9 @@ def get_score(pylintrc=None):
 
     # Print output for debugging
     for line in result.stdout.splitlines():
-        print(line)
-        if "Your code has been rated at" in line:
-            try:
-                score = float(line.split("at")[1].split("/")[0].strip())
-                return score
-            except ValueError:
-                return 0.0
+        search = re.search(r"rated at ([0-9]+\.[0-9]+)/10", line)
+        if search:
+            return float(search.group(1))
 
     return 0.0
 
