@@ -13,13 +13,27 @@ def get_score(pylintrc=None):
         score: The PyLint score.
     """
 
-    # Run PyLint and get the score
+    # Get tracked Python files
+    files_result = subprocess.run(
+        ["git", "ls-files", "*.py"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+        check=False
+    )
+
+    files = files_result.stdout.split()
+    if not files:
+        print("No Python files found.")
+        return 0.0
+
+    # Build the pylint command
     command = ["pylint"]
     if pylintrc:
         command.append(f"--rcfile={pylintrc}")
-    
-    command += ["git", "ls-files", "*.py"]
+    command += files  # add each Python file to be linted
 
+    # Run pylint
     result = subprocess.run(
         command,
         stdout=subprocess.PIPE,
@@ -28,13 +42,13 @@ def get_score(pylintrc=None):
         check=False
     )
 
+    # Print output for debugging
     for line in result.stdout.splitlines():
         print(line)
         if "Your code has been rated at" in line:
-            score = line.split("at")[1].split("/")[0].strip()
-
             try:
-                return float(score)
+                score = float(line.split("at")[1].split("/")[0].strip())
+                return score
             except ValueError:
                 return 0.0
 
@@ -102,4 +116,4 @@ def main():
     print("PyLint badge has been created successfully!")
 
 if __name__ == "__main__":
-    main()
+    print(get_score())
