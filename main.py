@@ -110,7 +110,7 @@ def main():
     with open(badge_path, "w", encoding="utf-8") as f:
         json.dump(badge_data, f, indent=2)
 
-    print("PyLint badge has been created successfully!")
+    print(f"PyLint badge has been created successfully! PyLint Score: {score}")
 
 if __name__ == "__main__":
     main()
