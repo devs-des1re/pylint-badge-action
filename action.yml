@@ -79,7 +79,7 @@ runs:
         git checkout badges || git checkout -b badges
 
         git add .
-        git commit -m "Added PyLint Badge For User"
+        git commit -m "Added PyLint Badge For User" || echo "No new files to commit"
 
         git push https://x-access-token:${{ inputs.gh_token }}@github.com/${GITHUB_REPOSITORY}.git badges --force
       shell: bash
