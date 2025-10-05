@@ -116,4 +116,4 @@ def main():
     print("PyLint badge has been created successfully!")
 
 if __name__ == "__main__":
-    print(get_score())
+    main()
