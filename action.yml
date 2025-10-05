@@ -1,0 +1,86 @@
+name: "PyLint Dynamic Badge"
+description: "Runs a linting test and creates a badge with the score."
+author: "devs-des1re"
+
+inputs:
+  python-version:
+    description: "The Python version you want to lint on."
+    required: true
+  requirements-file:
+    description: "The dependencies for Python to install. Default: requirements.txt"
+    default: "none"
+    required: false
+  pylintrc-file:
+    description: "The path for the PyLint configuration. Default: None"
+    default: None
+    required: false
+  badge-text:
+    description: "The text to display in the badge. Default: PyLint"
+    default: PyLint
+    required: false
+  perfect-score:
+    description: "Color of the badge for a PyLint score == 10. Default: brightgreen"
+    default: brightgreen
+    required: false
+  good-score:
+    description: "Color of the badge for a PyLint score >= 8 < 10. Default: yellow"
+    default: yellow
+    required: false
+  ok-score:
+    description: "Color of the badge for a PyLint score >= 5 > 8. Default: orange"
+    default: orange
+    required: false
+  bad-score:
+    description: "Color of the badge for a PyLint score < 5. Default: red"
+    default: red
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    # 1. Checkout Repository
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+    
+    # 2. Setup Python
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    # 3. Install Dependicies
+    - name: Install Dependencies
+      run:
+        python -m pip install --upgrade pip
+        pip install pylint
+      shell: bash
+    
+    # 3. Install Requirements
+    - name: Install Requirements
+      if: ${{ inputs.requirements-file != "none" }}
+      run: pip install -r ${{ inputs.requirements-file }}
+      shell: bash
+
+    # 4. Run PyLint & Generate Badge
+    - name: Run PyLint & Generate Badge
+      run: python main.py
+      shell: bash
+    
+    # 5. Push Badge To Repository
+    - name: Push Badge To Repository
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+
+        git checkout badges || git checkout -b badges
+
+        git add .
+        git commit -m "Added PyLint Badge For User"
+
+        git push origin badges
+      shell: bash
+
+    # 6. Push Changes To Repo
+    - name: Push Change To Repo
+      run: |
+        git push https://x-access-token:${{ inputs.gh_token }}@github.com/${GITHUB_REPOSITORY}.git
