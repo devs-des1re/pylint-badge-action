@@ -2,7 +2,6 @@
 import json
 import os
 import subprocess
-import sys
 
 def get_files():
     """Gets Python files in the repository.
@@ -13,7 +12,8 @@ def get_files():
     result = subprocess.run(
         ["git", "ls-files", "*.py"],
         stdout=subprocess.PIPE,
-        text=True
+        text=True,
+        check=False
     )
 
     return result.stdout.split()
@@ -35,12 +35,13 @@ def get_score(files, pylintrc=None):
     command = ["pylint", "."]
     if pylintrc:
         command += ["--rcfile", pylintrc]
-    
+
     result = subprocess.run(
         command,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
-        text=True
+        text=True,
+        check=False
     )
 
     for line in result.stdout.splitlines():
@@ -51,7 +52,7 @@ def get_score(files, pylintrc=None):
                 return float(score)
             except ValueError:
                 return 0.0
-        
+
     return 0.0
 
 def get_color(score, perfect, good, ok, bad):
@@ -69,16 +70,18 @@ def get_color(score, perfect, good, ok, bad):
     """
     if score == 10:
         return perfect
-    
+
     if score >= 8:
         return good
-    
+
     if score >= 5:
         return ok
-    
+
     return bad
 
 def main():
+    """Generates badge and writes in desired folder.
+    """
     # Environment information
     github_repository = os.environ.get("GITHUB_REPOSITORY", "")
     user, repo = github_repository.split("/")
@@ -109,7 +112,7 @@ def main():
     os.makedirs(dir_path, exist_ok=True)
     badge_path = os.path.join(dir_path, "pylint-badge.json")
 
-    with open(badge_path, "w") as f:
+    with open(badge_path, "w", encoding="utf-8") as f:
         json.dump(badge_data, f, indent=2)
 
     print("PyLint badge has been created successfully!")

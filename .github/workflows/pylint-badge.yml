@@ -19,3 +19,4 @@ jobs:
         uses: devs-des1re/pylint-badge-action@v1
         with:
           python-version: "3.11"
+          pylintrc-file: .pylintrc

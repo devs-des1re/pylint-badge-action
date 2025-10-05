@@ -6,7 +6,7 @@ branding:
   color: green
 
 inputs:
-  gh_token:
+  gh-token:
       description: "GitHub Token for pushing badge."
       required: true
   python-version:
@@ -84,5 +84,5 @@ runs:
         git add .
         git commit -m "Added PyLint Badge For User" || echo "No new files to commit"
 
-        git push https://x-access-token:${{ inputs.gh_token }}@github.com/${GITHUB_REPOSITORY}.git badges --force
+        git push https://x-access-token:${{ inputs.gh-token }}@github.com/${GITHUB_REPOSITORY}.git badges --force
       shell: bash
