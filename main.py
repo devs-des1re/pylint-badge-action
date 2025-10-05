@@ -45,6 +45,7 @@ def get_score(files, pylintrc=None):
     )
 
     for line in result.stdout.splitlines():
+        print(line)
         if "Your code has been rated at" in line:
             score = line.split("at")[1].split("/")[0].strip()
 
