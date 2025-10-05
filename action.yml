@@ -78,8 +78,7 @@ runs:
         git add .
         git commit -m "Added PyLint Badge For User"
 
-        git pull origin badges
-        git push origin badges
+        git push origin badges --force
       shell: bash
 
     # 6. Push Changes To Repo
