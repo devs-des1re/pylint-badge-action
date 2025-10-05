@@ -3,6 +3,9 @@ description: "Runs a linting test and creates a badge with the score."
 author: "devs-des1re"
 
 inputs:
+  gh_token:
+      description: "GitHub Token for pushing badge."
+      required: true
   python-version:
     description: "The Python version you want to lint on."
     required: true

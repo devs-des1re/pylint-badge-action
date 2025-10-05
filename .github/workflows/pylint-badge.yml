@@ -1,0 +1,19 @@
+name: PyLint Badge Workflow
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pylint-badge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate PyLint Badge
+        uses: devs-des1re/pylint-badge-action@v1
+        with:
+          python-version: "3.11"
