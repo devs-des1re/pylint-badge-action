@@ -60,7 +60,7 @@ runs:
     
     # 3. Install Requirements
     - name: Install Requirements
-      if: ${{ inputs.requirements-file != "none" }}
+      if: ${{ inputs.requirements-file != 'none' }}
       run: pip install -r ${{ inputs.requirements-file }}
       shell: bash
 
